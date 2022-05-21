@@ -1,0 +1,62 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  email               String      @unique
+  password            String
+  firstName            String
+  lastName            String
+  vendor              Vendor      @relation(references: [vendorId], fields: [vendorId])
+  vendorId            Int
+  role                Role
+  forgotPasswordToken String?
+  verifyPasswordToken String?
+  orderLists          OrderList[]
+  preferences         Json?
+}
+
+model Vendor {
+  id             String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  vendorId       Int     @unique
+  vendorName     String
+  vendorLongName String?
+  users          User[]
+}
+
+enum Role {
+  ADMIN
+  SUPERADMIN
+  VENDORUSER
+  VENDORADMIN
+  DEMO
+}
+
+model Order {
+  id          String      @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  orderId     Int
+  orderType   OrderType
+  orderLists  OrderList[] @relation(references: [id])
+  orderListId Int?
+}
+
+model OrderList {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  orders    Order[]  @relation(references: [id])
+  user      User[]   @relation(references: [id])
+  userId    String
+}
+
+enum OrderType {
+  PURCHASEORDER
+  PLANLOAD
+  LOGISTICS
+}

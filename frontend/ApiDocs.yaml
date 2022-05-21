@@ -1,0 +1,240 @@
+swagger: '2.0'
+info:
+    description: This is a simple API
+    version: 1.0.0
+    title: Simple Inventory API
+    # put the contact info for your development or API team
+    contact:
+        email: you@your-company.com
+
+    license:
+        name: Apache 2.0
+        url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+    - name: purchase-orders
+      description: purchase orders
+    - name: shipping-units
+      description: shipping units
+    - name: plan-loads
+      description: plan loads
+    - name: admin
+      description: admin functions
+
+paths:
+    /purchase-orders:
+        get:
+            tags:
+                - purchase-orders
+            summary: 'get all orders'
+            operationId: getPurchaseOrders
+            description: |
+                using a jwt to verify your user id and making sure you have logged in.
+            produces:
+                - application/json
+            parameters:
+                - in: header
+                  name: jwt
+                  type: string
+                  description: 'example: Bearer e23a4s3...'
+            responses:
+                200:
+                    description: purchase order response, it returns more fields too but not enought time to update.  If there are no orders then it just returns an empty array
+                    schema:
+                        type: object
+                        properties:
+                            metadata:
+                                $ref: '#/definitions/ResponseMetadata'
+                            orders:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/PurchaseOrderResponse'
+    /purchase-orders/{PurchaseOrderId}:
+        get:
+            tags:
+                - purchase-orders
+            summary: get purchase order and details
+            operationId: getSinglePurchaseOrder
+            description: |
+                using a jwt to verify your user id and making sure you have logged in. get by single Id and implicit vendor id
+            produces:
+                - application/json
+            parameters:
+                - in: header
+                  name: jwt
+                  type: string
+                  description: 'example: Bearer e23a4s3...'
+                - in: path
+                  required: true
+                  name: PurchaseOrderId
+                  type: string
+            responses:
+                200:
+                    description: purchase order response, it returns more fields too but not enought time to update.  If there are no orders then it just returns an empty array
+                    schema:
+                        type: object
+                        properties:
+                            purchaseOrder:
+                                $ref: '#/definitions/PurchaseOrderResponse'
+                            details:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/PurchaseOrderDetailResponse'
+    /purchase-orders/{PurchaseOrderId}/details:
+        get:
+            tags:
+                - purchase-orders
+            summary: get purchase order and details
+            operationId: getSinglePurchaseOrderDetails
+            description: |
+                using a jwt to verify your user id and making sure you have logged in. get by single Id and implicit vendor id
+            produces:
+                - application/json
+            parameters:
+                - in: header
+                  name: jwt
+                  type: string
+                  description: 'example: Bearer e23a4s3...'
+                - in: path
+                  required: true
+                  name: PurchaseOrderId
+                  type: string
+            responses:
+                200:
+                    description: purchase order response, it returns more fields too but not enought time to update.  If there are no orders then it just returns an empty array
+                    schema:
+                        type: object
+                        properties:
+                            metadata:
+                                $ref: '#/definitions/ResponseMetadata'
+                            details:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/PurchaseOrderDetailResponse'
+                401:
+                    description: this is a fallback in case the vendor id of the requestor does not match with a purchase order that the details are attached to
+                    schema:
+                        $ref: '#/definitions/ApiError'
+    /plan-loads:
+        get:
+            tags:
+                - plan-loads
+            summary: get all plan loads
+            operationId: getAllPlanLoads
+            description: no desc yet
+            produces:
+                - application/json
+            parameters:
+                - in: header
+                  name: jwt
+                  type: string
+                  description: 'example: Bearer e23a4s3...'
+            responses:
+                200:
+                    description: purchase order response, it returns more fields too but not enought time to update.  If there are no orders then it just returns an empty array
+                    schema:
+                        type: object
+                        properties:
+                            metadata:
+                                $ref: '#/definitions/ResponseMetadata'
+                            details:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/PurchaseOrderDetailResponse'
+                401:
+                    description: this is a fallback in case the vendor id of the requestor does not match with a purchase order that the details are attached to
+                    schema:
+                        $ref: '#/definitions/ApiError'
+    /shipping-units:
+        get:
+            tags:
+                - shipping-units
+            summary: get plan load shipping units
+            operationId: getAllShippingUnits
+            description: |
+                using a jwt to verify your user id and making sure you have logged in. get by single Id and implicit vendor id
+            produces:
+                - application/json
+            parameters:
+                - in: header
+                  name: jwt
+                  type: string
+                  description: 'example: Bearer e23a4s3...'
+            responses:
+                200:
+                    description: purchase order response, it returns more fields too but not enought time to update.  If there are no orders then it just returns an empty array
+                    schema:
+                        type: object
+                        properties:
+                            metadata:
+                                $ref: '#/definitions/ResponseMetadata'
+                            details:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/PurchaseOrderDetailResponse'
+                401:
+                    description: this is a fallback in case the vendor id of the requestor does not match with a purchase order that the details are attached to
+                    schema:
+                        $ref: '#/definitions/ApiError'
+definitions:
+    PurchaseOrderResponse:
+        type: object
+        properties:
+            BusinessUnit:
+                type: string
+            PurchaseOrderId:
+                type: number
+            PurchaseOrderNbr:
+                type: string
+            POStatus:
+                type: string
+                enum: [Open, InProgress, ReadyToShip, Complete]
+            VendorId:
+                type: number
+            PoLocationId:
+                type: number
+            ProjectDesc:
+                type: string
+    PurchaseOrderDetailResponse:
+        type: object
+        properties:
+            PurchaseDetailOrderId:
+                type: number
+            PurchaseOrderId:
+                type: number
+            LineNbr:
+                type: number
+            ItemNbr:
+                type: string
+            ItemDesc:
+                type: string
+            ItemQty:
+                type: number
+            FullFilledQty:
+                type: number
+            ItemAmt:
+                type: number
+            ItemUOM:
+                type: string
+    ResponseMetadata:
+        properties:
+            total:
+                type: number
+                example: 1234
+            start:
+                type: number
+            count:
+                type: number
+                example: 12345
+            end:
+                type: number
+    ApiError:
+        properties:
+            message:
+                type: string
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /Nightingale-Media/PlanesMovingStoragePlanner/1.0.0
+schemes:
+    - https

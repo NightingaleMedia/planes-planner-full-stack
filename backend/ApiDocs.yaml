@@ -1,0 +1,254 @@
+swagger: '2.0'
+info:
+  description: 'Api documentation for the backend of the planes application for verifying users, getting preferences, and storing order metadata (for sharing and saving)'
+  version: '1.0.0'
+  title: 'Planes Auth'
+  contact:
+    email: 'apiteam@swagger.io'
+host: 'petstore.swagger.io'
+basePath: '/v2'
+tags:
+  - name: 'auth'
+    description: 'Everything about your Pets'
+    externalDocs:
+      description: 'Find out more'
+      url: 'http://swagger.io'
+  - name: 'me'
+    description: 'everything about me based on jwt'
+
+schemes:
+  - 'https'
+  - 'http'
+paths:
+  /auth/login:
+    post:
+      tags:
+        - 'auth'
+      summary: 'Log in with a user id or email and password'
+      description: ''
+      operationId: 'loginUser'
+      consumes:
+        - 'application/json'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'User email id, email and password'
+          required: true
+          schema:
+            type: 'object'
+            properties:
+              id:
+                type: 'string'
+              email:
+                type: 'string'
+              password:
+                type: 'string'
+      responses:
+        '200':
+          description: 'Login Successful!'
+          schema:
+            $ref: '#/definitions/AuthUserResponse'
+        '400':
+          description: 'Invalid tag value'
+  /auth/verify:
+    get:
+      tags:
+        - 'auth'
+      summary: 'Verify Bearer Token in auth header'
+      description: 'Does not matter the request method, just needs a token in the headers'
+      operationId: 'verifyJwt'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'Bearer eyJhbGciOiJIU...'
+          in: 'header'
+          description: 'jwt to check'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/AuthUserResponse'
+        '401':
+          description: 'Unauthorized'
+  /me:
+    get:
+      tags:
+        - 'me'
+      summary: 'Finds Pets by tags'
+      description: ''
+      operationId: 'getMe'
+      produces:
+        - 'application/json'
+      parameters:
+        - name: 'Bearer eyJhbGciOiJIU...'
+          in: 'header'
+          description: 'jwt to check'
+          required: true
+          type: 'string'
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/AuthUserResponse'
+        '401':
+          description: 'Invalid tag value'
+      deprecated: false
+  /me/confirm-password:
+    post:
+      tags:
+        - 'me'
+      summary: 'confirm my password'
+      description: 'Confirm a users password.  Only works with a token corresponding to that user'
+      operationId: 'confirmPassword'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: header
+          name: jwt
+          type: string
+          description: jwt wil check for correct user
+        - in: body
+          name: user login info
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+                description: user email
+              password:
+                type: string
+                format: password
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/AuthUserResponse'
+        '401':
+          description: 'Invalid tag value'
+      deprecated: false
+  /me/change-password:
+    post:
+      tags:
+        - 'me'
+      summary: 'change my password'
+      description: 'change a password, the application will make sure you are who you say via JWT. Then it will make sure you are authorized.  Only that user can change password, to do it via admin, use the "user" route'
+      operationId: 'changePassword'
+      produces:
+        - 'application/json'
+      parameters:
+        - in: body
+          name: user and password
+          description: The user to create.
+          schema:
+            type: object
+            required:
+              - email
+              - oldPassword
+              - newPassword
+            properties:
+              email:
+                type: string
+                format: email
+                description: unique identifier
+              oldPassword:
+                type: string
+              newPassword:
+                type: string
+      responses:
+        '200':
+          description: 'successful operation'
+          schema:
+            $ref: '#/definitions/AuthUserResponse'
+        '401':
+          description: 'Invalid tag value'
+      deprecated: false
+securityDefinitions:
+  petstore_auth:
+    type: 'oauth2'
+    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+    flow: 'implicit'
+    scopes:
+      write:pets: 'modify pets in your account'
+      read:pets: 'read your pets'
+  api_key:
+    type: 'apiKey'
+    name: 'api_key'
+    in: 'header'
+definitions:
+  User:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+        format: 'int64'
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+    xml:
+      name: 'User'
+  UserLogin:
+    type: 'object'
+    properties:
+      id:
+        type: 'string'
+      email:
+        type: 'string'
+      password:
+        type: 'string'
+  AuthUserResponse:
+    type: 'object'
+    properties:
+      jwt:
+        type: 'string'
+        format: 'int64'
+        example: 'eyJhbGciOiJIU...'
+      user:
+        type: 'object'
+        properties:
+          user:
+            $ref: '#/definitions/UserResponse'
+  UserResponse:
+    type: 'object'
+    properties:
+      id:
+        type: 'string'
+      vendorId:
+        type: 'number'
+      firstName:
+        type: 'string'
+      lastName:
+        type: 'string'
+      email:
+        type: 'string'
+      role:
+        $ref: '#/definitions/Roles'
+  Roles:
+    type: 'string'
+    enum:
+      - 'VENDORUSER'
+      - 'VENDORADMIN'
+      - 'SUPERADMIN'
+    default: 'VENDORUSER'
+  ApiResponse:
+    type: 'object'
+    properties:
+      code:
+        type: 'integer'
+        format: 'int32'
+      type:
+        type: 'string'
+      message:
+        type: 'string'

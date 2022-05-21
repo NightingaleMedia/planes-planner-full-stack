@@ -1,0 +1,112 @@
+{
+    "name": "planes-planner",
+    "version": "1.0.0",
+    "author": "NightingaleMedia",
+    "private": true,
+    "scripts": {
+        "dev": "next dev -p 3000",
+        "build": "next build",
+        "start": "next start -p 4040",
+        "lint": "eslint ./src",
+        "lint-fix": "eslint --fix ./src"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app"
+        ]
+    },
+    "babel": {
+        "presets": [
+            "@babel/preset-react"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "prisma": {
+        "schema": "./lib/db/prisma/schema.prisma"
+    },
+    "dependencies": {
+        "@emotion/cache": "^11.4.0",
+        "@emotion/react": "^11.4.0",
+        "@emotion/styled": "^11.3.0",
+        "@fullcalendar/core": "^5.5.0",
+        "@fullcalendar/daygrid": "^5.5.0",
+        "@fullcalendar/interaction": "^5.5.0",
+        "@fullcalendar/list": "^5.5.0",
+        "@fullcalendar/react": "^5.5.0",
+        "@fullcalendar/timegrid": "^5.5.0",
+        "@fullcalendar/timeline": "^5.5.0",
+        "@material-ui/core": "5.0.0-alpha.34",
+        "@material-ui/data-grid": "^4.0.0-alpha.37",
+        "@material-ui/icons": "5.0.0-alpha.34",
+        "@material-ui/lab": "5.0.0-alpha.34",
+        "@material-ui/system": "5.0.0-alpha.34",
+        "@prisma/client": "^2.30.3",
+        "@react-pdf/renderer": "^1.6.13",
+        "@reduxjs/toolkit": "^1.5.0",
+        "date-fns": "^2.21.3",
+        "express": "^4.17.1",
+        "formik": "^2.2.7",
+        "history": "^5.0.0",
+        "i18next": "^19.8.7",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.20",
+        "moment": "^2.29.1",
+        "next": "^11.1.2",
+        "next-swagger-doc": "^0.2.1",
+        "nprogress": "^0.2.0",
+        "numeral": "^2.0.6",
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-apexcharts": "^1.3.9",
+        "react-dom": "^17.0.2",
+        "react-dropzone": "^11.2.4",
+        "react-helmet-async": "^1.0.7",
+        "react-hot-toast": "^1.0.2",
+        "react-i18next": "^11.8.5",
+        "react-modal-image": "^2.5.0",
+        "react-moment": "^1.1.1",
+        "react-perfect-scrollbar": "^1.5.8",
+        "react-redux": "^7.2.4",
+        "react-syntax-highlighter": "^15.4.3",
+        "redux": "^4.1.0",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.3.0",
+        "request": "^2.88.2",
+        "stylis": "^4.0.10",
+        "stylis-plugin-rtl": "^2.1.0",
+        "swagger-jsdoc": "^6.1.0",
+        "swagger-ui-react": "^4.9.1",
+        "swr": "^1.0.0",
+        "yup": "^0.32.9"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.12.3",
+        "@babel/eslint-parser": "^7.14.3",
+        "@babel/preset-react": "^7.13.13",
+        "@types/swagger-jsdoc": "^6.0.1",
+        "@typescript-eslint/eslint-plugin": "^4.29.3",
+        "@typescript-eslint/parser": "^4.29.3",
+        "eslint": "^7.27.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.23.3",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-react": "^7.25.0",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "prettier-eslint-cli": "^5.0.1",
+        "prisma": "^2.30.3",
+        "typescript": "^4.4.4"
+    }
+}

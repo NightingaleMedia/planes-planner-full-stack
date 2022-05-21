@@ -1,0 +1,660 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["microsoftSqlServer"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model AdjustmentTypes {
+  AdjustmentTypeId   Int       @id @default(autoincrement())
+  EntityOwnerId      Int?
+  AdjustmentTypeCode String?   @db.VarChar(25)
+  AdjustmentTypeDesc String?   @db.VarChar(100)
+  CreateDt           DateTime? @db.DateTime
+  CreateUser         String?   @db.VarChar(25)
+  UpdateDt           DateTime? @db.DateTime
+  UpdateUser         String?   @db.VarChar(25)
+
+  @@index([EntityOwnerId], name: "IX_AdjustmentTypes_EntityOwnerId")
+}
+
+model apEntity {
+  EntityId           Int         @id @default(autoincrement())
+  ParentEntityId     Int?
+  EntityCodeId       String?     @db.VarChar(15)
+  EntityName         String?     @db.VarChar(50)
+  ActiveFlg          Boolean?
+  SystemFlg          Boolean?
+  SiteFlg            Boolean?
+  OwnerFlg           Boolean?
+  CustomerFlg        Boolean?
+  SimpleStuffOnlyFlg Boolean?
+  Address1           String?     @db.VarChar(50)
+  Address2           String?     @db.VarChar(50)
+  City               String?     @db.VarChar(50)
+  StateId            String?     @db.Char(2)
+  ZipCode            String?     @db.VarChar(10)
+  PrimaryIds         String?     @db.VarChar(500)
+  ROISetups          ROISetups[]
+
+  @@index([ParentEntityId], name: "XIF206apEntity")
+  @@index([StateId], name: "XIF29apEntity")
+  @@index([ZipCode], name: "XIF30apEntity")
+}
+
+model apSysItemClass {
+  ItemClassId          Int         @id @default(autoincrement())
+  ItemClassName        String?     @db.VarChar(50)
+  ActiveFlg            Boolean?
+  EntityOwnerId        Int?
+  TableName            String?     @db.VarChar(50)
+  Description          String?     @db.VarChar(100)
+  TableFlg             Boolean?
+  ViewFlg              Boolean?
+  ColPrefix            String?     @db.Char(3)
+  TrackAssetFlg        Boolean?
+  ExtendedDetailFlg    Boolean?
+  DirectedItemClassFlg Boolean?
+  ROISetups            ROISetups[]
+
+  @@index([EntityOwnerId, ItemClassId], name: "IX_apSysItemClass_EIIds")
+  @@index([EntityOwnerId], name: "XIF72apSysItemClass")
+}
+
+model apSysItemClassAttribute {
+  ClassAttributeId     Int         @id @default(autoincrement())
+  ActiveFlg            Boolean?
+  ItemClassId          Int?
+  AttributeTypeId      Int?
+  AttributeId          Int?
+  RoleColName          String?     @db.VarChar(50)
+  RoleColHead          String?     @db.VarChar(50)
+  RoleLabel            String?     @db.VarChar(50)
+  PresentationTabOrder Int?        @db.SmallInt
+  RequiredFlg          Boolean     @default(true)
+  DirectedAttributeFlg Boolean?
+  DropDownFlg          Boolean?
+  ShowEllipseFlg       Boolean?
+  ROISetups            ROISetups[]
+
+  @@index([ItemClassId], name: "XIF45apSysItemClassAttribute")
+  @@index([AttributeId], name: "XIF46apSysItemClassAttribute")
+  @@index([AttributeTypeId], name: "XIF94apSysItemClassAttribute")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Brand_Managers_ {
+  Plan    String? @db.NVarChar(255)
+  PlantPM String? @db.NVarChar(255)
+
+  @@map("Brand Managers$")
+  @@ignore
+}
+
+model CountryOfOrigins {
+  CountryOfOriginId Int       @id @default(autoincrement())
+  EntityOwnerId     Int?
+  VendorId          String?   @db.VarChar(25)
+  VendorName        String?   @db.VarChar(100)
+  ItemNbr           String?   @db.VarChar(25)
+  CountryOfOrigin   String?   @db.VarChar(50)
+  ItemClassName     String?   @db.VarChar(50)
+  CreateDt          DateTime? @db.DateTime
+  CreateUser        String?   @db.VarChar(25)
+}
+
+model DocumentTypes {
+  DocumentTypeId       Int       @id @default(autoincrement())
+  DocumentTypeCode     String?   @db.VarChar(25)
+  DocumentTypeDesc     String?   @db.VarChar(100)
+  DocumentTypeImageUrl String?   @db.VarChar(100)
+  HTTPContentType      String?   @db.VarChar(50)
+  CreateDt             DateTime? @db.DateTime
+  CreateUser           String?   @db.VarChar(25)
+  UpdateDt             DateTime? @db.DateTime
+  UpdateUser           String?   @db.VarChar(25)
+}
+
+model Items {
+  ItemId        Int       @id @default(autoincrement())
+  EntityOwnerId Int?
+  ItemNbr       String?   @db.VarChar(100)
+  ItemDesc      String?   @db.VarChar(255)
+  UnitOfMeasure String?   @db.VarChar(15)
+  C30_A         String?   @db.VarChar(250)
+  ItemWeight    Decimal?  @db.Decimal(9, 4)
+  CreateUser    String?   @db.VarChar(25)
+  CreateDt      DateTime? @db.DateTime
+  UpdateUser    String?   @db.VarChar(25)
+  UpdateDt      DateTime? @db.DateTime
+
+  @@index([ItemNbr], name: "IDX_ItemNbr")
+}
+
+model Locations {
+  LocationId                                           Int         @id @default(autoincrement())
+  EntityOwnerId                                        Int?
+  VendorNbr                                            String?     @db.VarChar(25)
+  LocationCode                                         String?     @db.VarChar(25)
+  LocationName                                         String?     @db.VarChar(100)
+  LocationLongName                                     String?     @db.VarChar(100)
+  CurrencyCode                                         String?     @db.VarChar(25)
+  CurrencySymbol                                       String?     @db.VarChar(25)
+  HTSCountryCode                                       String?     @db.VarChar(2)
+  Country                                              String?     @db.VarChar(100)
+  Address1                                             String?     @db.VarChar(100)
+  Address2                                             String?     @db.VarChar(100)
+  Address3                                             String?     @db.VarChar(100)
+  Address4                                             String?     @db.VarChar(100)
+  Address5                                             String?     @db.VarChar(100)
+  Address6                                             String?     @db.VarChar(100)
+  Address7                                             String?     @db.VarChar(100)
+  Address8                                             String?     @db.VarChar(100)
+  Address9                                             String?     @db.VarChar(100)
+  Address10                                            String?     @db.VarChar(100)
+  City                                                 String?     @db.VarChar(100)
+  State                                                String?     @db.VarChar(50)
+  ZipCode                                              String?     @db.VarChar(25)
+  Contact                                              String?     @db.VarChar(100)
+  PhoneNbr                                             String?     @db.VarChar(50)
+  SoldToFlg                                            Boolean
+  CustomsBrokerFlg                                     Boolean
+  WarehouseFlg                                         Boolean
+  StoreFlg                                             Boolean
+  VendorFlg                                            Boolean
+  CIOwnerFlg                                           Boolean
+  CreateDt                                             DateTime?   @db.DateTime
+  CreateUser                                           String?     @db.VarChar(25)
+  UpdateDt                                             DateTime?   @db.DateTime
+  UpdateUser                                           String?     @db.VarChar(25)
+  Shipments_LocationsToShipments_DestinationLocationId Shipments[] @relation("LocationsToShipments_DestinationLocationId")
+  Shipments_LocationsToShipments_ExporterLocationId    Shipments[] @relation("LocationsToShipments_ExporterLocationId")
+  Shipments_LocationsToShipments_NotifyLocationId      Shipments[] @relation("LocationsToShipments_NotifyLocationId")
+  Shipments_LocationsToShipments_OriginLocationId      Shipments[] @relation("LocationsToShipments_OriginLocationId")
+  Shipments_LocationsToShipments_SoldToLocationId      Shipments[] @relation("LocationsToShipments_SoldToLocationId")
+
+  @@index([EntityOwnerId], name: "IX_LoadLocations_EntityOwnerId")
+}
+
+model LogTypes {
+  LogTypeId         Int       @id @default(autoincrement())
+  LogTypeCode       String?   @db.VarChar(25)
+  LogTypeName       String?   @db.VarChar(100)
+  LogTypeDefinition String?   @db.VarChar(1000)
+  LogFieldName1     String?   @db.VarChar(50)
+  LogFieldName2     String?   @db.VarChar(50)
+  LogFieldName3     String?   @db.VarChar(50)
+  LogFieldName4     String?   @db.VarChar(50)
+  LogFieldName5     String?   @db.VarChar(50)
+  LogFieldName6     String?   @db.VarChar(50)
+  LogFieldName7     String?   @db.VarChar(50)
+  LogFieldName8     String?   @db.VarChar(50)
+  CreateDt          DateTime? @db.DateTime
+  CreateUser        String?   @db.VarChar(25)
+  UpdateDt          DateTime? @db.DateTime
+  UpdateUser        String?   @db.VarChar(25)
+}
+
+model PhysicalInventories {
+  PhysicalInventoryId   Int                     @id @default(autoincrement())
+  OwnerCode             String?                 @db.VarChar(25)
+  Name                  String?                 @db.VarChar(100)
+  Description           String?                 @db.VarChar(1000)
+  StartDt               DateTime?               @db.DateTime
+  EndDt                 DateTime?               @db.DateTime
+  CreateDt              DateTime?               @db.DateTime
+  CreateUser            String?                 @db.VarChar(25)
+  UpdateDt              DateTime?               @db.DateTime
+  UpdateUser            String?                 @db.VarChar(25)
+  PhysicalInventoryBins PhysicalInventoryBins[]
+}
+
+model PhysicalInventoryBins {
+  PhysicalInventoryBinId Int                  @id @default(autoincrement())
+  PhysicalInventoryId    Int?
+  EntitySiteId           Int?
+  TeamName               String?              @db.VarChar(25)
+  NbrCounts              Int?                 @default(0)
+  StartDt                DateTime?            @db.DateTime
+  EndDt                  DateTime?            @db.DateTime
+  FirstTag               String?              @db.VarChar(20)
+  CreateDt               DateTime?            @db.DateTime
+  CreateUser             String?              @db.VarChar(25)
+  UpdateDt               DateTime?            @db.DateTime
+  UpdateUser             String?              @db.VarChar(25)
+  PhysicalInventories    PhysicalInventories? @relation(fields: [PhysicalInventoryId], references: [PhysicalInventoryId])
+
+  @@index([PhysicalInventoryId, EntitySiteId, FirstTag], name: "IX_PIB_PIID_ESID_FT")
+  @@index([PhysicalInventoryId], name: "IX_PIB_PhysicalInventoryId")
+}
+
+model PlanDetails {
+  PlanDetailId Int       @id @default(autoincrement())
+  PlanId       Int?
+  ItemId       String?   @db.UniqueIdentifier
+  ItemNbr      String?   @db.VarChar(50)
+  QtyPerPlan   Int?
+  XDockQty     Int?
+  RevisionQty  Int?
+  Notes        String?   @db.VarChar(1000)
+  LoadName     String?   @db.VarChar(100)
+  CreateDt     DateTime? @db.DateTime
+  CreateUser   String?   @db.VarChar(25)
+  UpdateDt     DateTime? @db.DateTime
+  UpdateUser   String?   @db.VarChar(25)
+  Plans        Plans?    @relation(fields: [PlanId], references: [PlanId])
+
+  @@index([PlanId], name: "IX_PlanDetails_PlanId")
+  @@index([PlanId, ItemId], name: "IX_PlanDetails_PlanId_ItemNbr")
+}
+
+model PlanLoadItems {
+  PlanLoadItemId Int        @id @default(autoincrement())
+  PlanLoadId     Int?
+  ItemNbr        String?    @db.VarChar(50)
+  ItemDesc       String?    @db.VarChar(255)
+  LoadQty        Int?
+  PackingSlipQty Int?
+  CreateDt       DateTime?  @db.DateTime
+  CreateUser     String?    @db.VarChar(25)
+  UpdateDt       DateTime?  @db.DateTime
+  UpdateUser     String?    @db.VarChar(25)
+  PlanLoads      PlanLoads? @relation(fields: [PlanLoadId], references: [PlanLoadId])
+}
+
+model PlanLoads {
+  PlanLoadId           Int                 @id @default(autoincrement())
+  PlanId               Int?
+  LocationId           Int?
+  LoadName             String?             @db.VarChar(100)
+  ShortLoadName        String?             @db.VarChar(20)
+  PurchaseOrderId      Int?
+  BusinessUnit         String?             @db.VarChar(50)
+  PurchaseOrderNbr     String?             @db.VarChar(50)
+  VendorId             Int?
+  VendorNbr            String?             @db.VarChar(25)
+  VendorName           String?             @db.VarChar(50)
+  DeliveryMethod       String?             @db.VarChar(50)
+  ReservationId        Int?
+  SuppPlanShipDt       DateTime?           @db.DateTime
+  SuppActShipDt        DateTime?           @db.DateTime
+  XDockDueDt           DateTime?           @db.DateTime
+  XDockRecDt           DateTime?           @db.DateTime
+  XDockPlanShipDt      DateTime?           @db.DateTime
+  XDockActShipDt       DateTime?           @db.DateTime
+  RemoteWhseDueDt      DateTime?           @db.DateTime
+  ReceivedRemoteWhseDt DateTime?           @db.DateTime
+  StoreReceivedDt      DateTime?           @db.DateTime
+  StoreDueDt           DateTime?           @db.DateTime
+  OrigStoreDueDt       DateTime?           @db.DateTime
+  OutForDeliv          DateTime?           @db.DateTime
+  StoreArrival         DateTime?           @db.DateTime
+  UnloadStart          DateTime?           @db.DateTime
+  StoreDepart          DateTime?           @db.DateTime
+  NbrMen               Int?
+  NbrTrucks            Int?
+  WarehouseId          Int?
+  DeliveryOrderNbr     String?             @db.VarChar(25)
+  RefBillNbr           String?             @db.VarChar(50)
+  Carrier              String?             @db.VarChar(50)
+  SuppRefBillNbr       String?             @db.VarChar(50)
+  SuppCarrier          String?             @db.VarChar(50)
+  SuppContainer        String?             @db.VarChar(25)
+  DeliveredById        Int?
+  ReceivedBy           String?             @db.VarChar(50)
+  LoadNote             String?             @db.VarChar(1000)
+  PalletPos            Decimal?            @db.Decimal(5, 2)
+  Container            String?             @db.VarChar(25)
+  CreateDt             DateTime?           @db.DateTime
+  CreateUser           String?             @db.VarChar(25)
+  UpdateDt             DateTime?           @db.DateTime
+  UpdateUser           String?             @db.VarChar(25)
+  Plans                Plans?              @relation(fields: [PlanId], references: [PlanId])
+  PlanLoadItems        PlanLoadItems[]
+  PlanLoadSkidItems    PlanLoadSkidItems[]
+  PlanLoadTags         PlanLoadTags[]
+
+  @@index([LocationId], name: "IX_PlanLoads_LoadLocationId")
+  @@index([PlanId], name: "IX_PlanLoads_PlanId")
+}
+
+model PlanLoadShippingUnitDetails {
+  PlanLoadShippingUnitDetailId Int                    @id @default(autoincrement())
+  PlanLoadShippingUnitId       Int?
+  PurchaseOrderDetailId        Int?
+  ItemId                       Int?
+  Qty                          Int?
+  HTSCode                      String?                @db.VarChar(50)
+  CreateDt                     DateTime?              @db.DateTime
+  CreateUser                   String?                @db.VarChar(25)
+  UpdateDt                     DateTime?              @db.DateTime
+  UpdateUser                   String?                @db.VarChar(25)
+  PlanLoadShippingUnits        PlanLoadShippingUnits? @relation(fields: [PlanLoadShippingUnitId], references: [PlanLoadShippingUnitId])
+}
+
+model PlanLoadShippingUnits {
+  PlanLoadShippingUnitId      Int                           @id @default(autoincrement())
+  PlanLoadId                  Int?
+  Packaging                   String?                       @db.VarChar(25)
+  Weight                      Decimal?                      @db.Decimal(10, 4)
+  Dims                        String?                       @db.VarChar(50)
+  LicensePlateNbr             String?                       @db.VarChar(50)
+  CreateDt                    DateTime?                     @db.DateTime
+  CreateUser                  String?                       @db.VarChar(25)
+  UpdateDt                    DateTime?                     @db.DateTime
+  UpdateUser                  String?                       @db.VarChar(25)
+  PlanLoadShippingUnitDetails PlanLoadShippingUnitDetails[]
+}
+
+model PlanLoadSkidItems {
+  PlanLoadSkidItemId Int        @id @default(autoincrement())
+  PlanLoadId         Int?
+  SkidTag            String?    @db.VarChar(25)
+  OrigSkidTag        String?    @db.VarChar(25)
+  PONbr              String?    @db.VarChar(25)
+  ItemNbr            String?    @db.VarChar(25)
+  ItemDesc           String?    @db.VarChar(250)
+  ItemQty            Int?
+  CreateDt           DateTime?  @db.DateTime
+  CreateUser         String?    @db.VarChar(25)
+  UpdateDt           DateTime?  @db.DateTime
+  UpdateUser         String?    @db.VarChar(25)
+  PlanLoads          PlanLoads? @relation(fields: [PlanLoadId], references: [PlanLoadId])
+
+  @@index([PlanLoadId, SkidTag], name: "_dta_index_PlanLoadSkidItems_9_1058870889__K2_K3")
+}
+
+model PlanLoadTags {
+  PlanLoadTagId Int        @id @default(autoincrement())
+  PlanLoadId    Int?
+  Tag           String?    @db.VarChar(25)
+  SkidTag       String?    @db.VarChar(25)
+  CreateDt      DateTime?  @db.DateTime
+  CreateUser    String?    @db.VarChar(25)
+  UpdateDt      DateTime?  @db.DateTime
+  UpdateUser    String?    @db.VarChar(25)
+  PlanLoads     PlanLoads? @relation(fields: [PlanLoadId], references: [PlanLoadId])
+
+  @@index([PlanLoadId, Tag], name: "IX_PlanLoadTags_PLID_T")
+  @@index([PlanLoadId, Tag], name: "_dta_index_PlanLoadTags_9_1090871003__K2_K3")
+  @@index([PlanLoadId, SkidTag], name: "_dta_index_PlanLoadTags_9_1090871003__K2_K4")
+}
+
+model Plans {
+  PlanId              Int               @id @default(autoincrement())
+  EntityOwnerId       Int?
+  EntitySiteId        Int?
+  RelatedPlanId       Int?
+  PlanNbr             String?           @db.VarChar(25)
+  PlanName            String?           @db.VarChar(100)
+  PlanStatus          String?           @db.VarChar(25)
+  StoreNbr            String?           @db.VarChar(25)
+  StoreType           String?           @db.VarChar(50)
+  ProjectNbr          String?           @db.VarChar(25)
+  AccountNbr          String?           @db.VarChar(25)
+  GLBusUnit           String?           @db.VarChar(25)
+  ProjBusUnit         String?           @db.VarChar(25)
+  PlanManagerId       Int?
+  PlanCoordinatorId   Int?
+  FixturePMId         Int?
+  PlantStylePMId      Int?
+  PlanTypeId          Int?
+  FinalMileLocationId Int?
+  PlanDate            DateTime?         @db.DateTime
+  ConsStartDt         DateTime?         @db.DateTime
+  OSMContShipDt       DateTime?         @db.DateTime
+  FixContShipDt       DateTime?         @db.DateTime
+  OthContShipDt       DateTime?         @db.DateTime
+  OSM3ContShipDt      DateTime?         @db.DateTime
+  TurnoverDt          DateTime?         @db.DateTime
+  FixtureDt           DateTime?         @db.DateTime
+  StoreOpenDt         DateTime?         @db.DateTime
+  FixtureMapDt        DateTime?         @db.DateTime
+  OrigConstDt         DateTime?         @db.DateTime
+  PlantStyleDt        DateTime?         @db.DateTime
+  BidCompleteDt       DateTime?         @db.DateTime
+  BidAwardDt          DateTime?         @db.DateTime
+  BidSubmitDt         DateTime?         @db.DateTime
+  ConstSchedVersDt    DateTime?         @db.DateTime
+  LoadSchedCreateDt   DateTime?         @db.DateTime
+  AccessRestriction   String?           @db.VarChar(10)
+  SqFt                Int?
+  RoomNbr             Int?
+  FloorNbr            Int?
+  RSCMiles            Int?
+  Notes               String?           @db.VarChar(4000)
+  UserDefined1        DateTime?         @db.DateTime
+  UserDefined2        DateTime?         @db.DateTime
+  UserDefined3        String?           @db.VarChar(255)
+  UserDefined4        String?           @db.VarChar(255)
+  UserDefined5        String?           @db.VarChar(255)
+  UserDefined6        String?           @db.VarChar(255)
+  CreateDt            DateTime?         @db.DateTime
+  CreateUser          String?           @db.VarChar(25)
+  UpdateDt            DateTime?         @db.DateTime
+  UpdateUser          String?           @db.VarChar(25)
+  PlanDetails         PlanDetails[]
+  PlanLoads           PlanLoads[]
+  ShipmentDetails     ShipmentDetails[]
+
+  @@index([PlanManagerId], name: "IX_Plans_PlanManagerId")
+  @@index([PlanNbr], name: "IX_Plans_PlanNbr")
+  @@index([PlanTypeId], name: "IX_Plans_PlanTypeId")
+  @@index([StoreNbr], name: "IX_Plans_StoreNbr")
+}
+
+model Products {
+  ProductId   Int       @id @default(autoincrement())
+  VendorId    Int?
+  ProductCode String?   @db.VarChar(25)
+  ProductName String?   @db.VarChar(100)
+  CreateDt    DateTime? @db.DateTime
+  CreateUser  String?   @db.VarChar(25)
+  UpdateDt    DateTime? @db.DateTime
+  UpdateUser  String?   @db.VarChar(25)
+  Vendors     Vendors?  @relation(fields: [VendorId], references: [VendorId])
+
+  @@index([VendorId], name: "IX_Products")
+}
+
+model ProjectInventories {
+  ProjectInventoryId     Int                    @id @default(autoincrement())
+  ProjectNbr             String?                @unique @db.VarChar(25)
+  ProjectName            String?                @db.VarChar(100)
+  ProjectStatus          String?                @db.VarChar(25)
+  ProjectDate            DateTime?              @db.DateTime
+  PurchaseOrderNbr       String?                @db.VarChar(50)
+  ProjectManagerId       Int?
+  ProjectInventoryTypeId Int?
+  Notes                  String?                @db.VarChar(4000)
+  CreateDt               DateTime?              @db.DateTime
+  CreateUser             String?                @db.VarChar(25)
+  UpdateDt               DateTime?              @db.DateTime
+  UpdateUser             String?                @db.VarChar(25)
+  ProjectInventoryTypes  ProjectInventoryTypes? @relation(fields: [ProjectInventoryTypeId], references: [ProjectInventoryTypeId])
+  ProjectManagers        ProjectManagers?       @relation(fields: [ProjectManagerId], references: [ProjectManagerId])
+
+  @@index([ProjectInventoryTypeId, ProjectManagerId, PurchaseOrderNbr], name: "IX_ProjectInventories_1")
+}
+
+model ProjectInventoryTypes {
+  ProjectInventoryTypeId   Int                  @id @default(autoincrement())
+  ProjectInventoryTypeCode String?              @db.VarChar(25)
+  ProjectInventoryTypeDesc String?              @db.VarChar(100)
+  CreateDt                 DateTime?            @db.DateTime
+  CreateUser               String?              @db.VarChar(25)
+  UpdateDt                 DateTime?            @db.DateTime
+  UpdateUser               String?              @db.VarChar(25)
+  ProjectInventories       ProjectInventories[]
+}
+
+model ProjectManagers {
+  ProjectManagerId    Int                  @id @default(autoincrement())
+  ProjectManagerAlias String?              @db.VarChar(25)
+  ProjectManagerName  String?              @db.VarChar(100)
+  ProjectManagerEmail String?              @db.VarChar(100)
+  ActiveFlg           Boolean              @default(true)
+  CreateDt            DateTime?            @db.DateTime
+  CreateUser          String?              @db.VarChar(25)
+  UpdateDt            DateTime?            @db.DateTime
+  UpdateUser          String?              @db.VarChar(25)
+  ProjectInventories  ProjectInventories[]
+}
+
+model PurchaseOrderDetails {
+  PurchaseOrderDetailId Int            @id @default(autoincrement())
+  PurchaseOrderId       Int
+  LineNbr               Int?
+  ItemNbr               String?        @db.VarChar(25)
+  ItemDesc              String?        @db.VarChar(250)
+  ItemQty               Decimal?       @db.Decimal(15, 4)
+  ItemAmt               Float?         @db.Money
+  ItemUOM               String?        @db.VarChar(25)
+  OrigCountry           String?        @db.VarChar(50)
+  DestCountry           String?        @db.VarChar(50)
+  EU                    String?        @db.VarChar(25)
+  HTSItem               String?        @db.VarChar(25)
+  HTSCode               String?        @db.VarChar(25)
+  CreateDt              DateTime?      @db.DateTime
+  CreateUser            String?        @db.VarChar(25)
+  UpdateDt              DateTime?      @db.DateTime
+  UpdateUser            String?        @db.VarChar(25)
+  PurchaseOrders        PurchaseOrders @relation(fields: [PurchaseOrderId], references: [PurchaseOrderId])
+
+  @@index([PurchaseOrderId], name: "FX_PurchaseOrders")
+  @@index([ItemNbr, PurchaseOrderId, PurchaseOrderDetailId, LineNbr], name: "IDX_ItemNbrPOIdPODIdLineNbr")
+  @@index([ItemAmt, ItemQty, PurchaseOrderId, LineNbr, ItemNbr, PurchaseOrderDetailId], name: "IDX_POIdLineNbrItemNbrPODId")
+  @@index([ItemNbr], name: "IX_PurchaseOrders_ItemNbr")
+  @@index([PurchaseOrderId, LineNbr], name: "V_PurchaseOrderLineNbr")
+}
+
+model PurchaseOrders {
+  PurchaseOrderId        Int                    @id @default(autoincrement())
+  EntityOwnerId          Int?
+  PurchaseOrderNbr       String?                @db.VarChar(25)
+  PurchaseOrderDate      DateTime?              @db.DateTime
+  ProjectId              String?                @db.VarChar(25)
+  ProjectDesc            String?                @db.VarChar(100)
+  StoreNbr               String?                @db.VarChar(10)
+  ShipDt                 DateTime?              @db.DateTime
+  VendorId               String?                @db.VarChar(25)
+  VendorName             String?                @db.VarChar(50)
+  VendorLocation         String?                @db.VarChar(50)
+  BusinessUnit           String?                @db.VarChar(50)
+  AccountNbr             String?                @db.VarChar(50)
+  PurchaseOrderDueDate   DateTime?              @db.DateTime
+  PurchaseOrderReference String?                @db.VarChar(1000)
+  PurchaseOrderLocation  String?                @db.VarChar(50)
+  Currency               String?                @db.VarChar(10)
+  CreateDt               DateTime?              @db.DateTime
+  CreateUser             String?                @db.VarChar(25)
+  UpdateDt               DateTime?              @db.DateTime
+  UpdateUser             String?                @db.VarChar(25)
+  PurchaseOrderDetails   PurchaseOrderDetails[]
+
+  @@unique([EntityOwnerId, BusinessUnit, PurchaseOrderNbr], name: "IX_PO_OwnerPONbr")
+  @@index([Currency, VendorName, PurchaseOrderNbr, BusinessUnit, PurchaseOrderId], name: "IDX_PONbrBUPOId")
+}
+
+model ROISetups {
+  ROISetupId              Int                      @id @default(autoincrement())
+  EntityOwnerId           Int?
+  ItemClassId             Int?
+  ClassAttributeId        Int?
+  CreateDt                DateTime?                @db.DateTime
+  CreateUser              String?                  @db.VarChar(25)
+  UpdateDt                DateTime?                @db.DateTime
+  UpdateUser              String?                  @db.VarChar(25)
+  apSysItemClassAttribute apSysItemClassAttribute? @relation(fields: [ClassAttributeId], references: [ClassAttributeId])
+  apEntity                apEntity?                @relation(fields: [EntityOwnerId], references: [EntityId])
+  apSysItemClass          apSysItemClass?          @relation(fields: [ItemClassId], references: [ItemClassId])
+}
+
+model ShipmentDetails {
+  ShipmentDetailId       Int        @id @default(autoincrement())
+  ShipmentId             Int?
+  PlanId                 Int?
+  PlanLoadShippingUnitId Int?
+  OrderNbr               String?    @db.VarChar(25)
+  Method                 String?    @db.VarChar(5)
+  ContainerNbr           String?    @db.VarChar(25)
+  TagLotNbrs             String?    @db.VarChar(250)
+  SealNbr                String?    @db.VarChar(25)
+  RightTracFlg           Boolean    @default(true)
+  TrackingNbr            String?    @db.VarChar(50)
+  DetailStatus           String?    @db.VarChar(50)
+  DeliveryDt             DateTime?  @db.DateTime
+  DocumentNbrs           String?    @db.VarChar(250)
+  GrossWt                Decimal?   @db.Decimal(11, 4)
+  TareWt                 Decimal?   @db.Decimal(11, 4)
+  NetWt                  Decimal?   @db.Decimal(11, 4)
+  ContainerWt            Decimal?   @db.Decimal(11, 4)
+  NbrCartons             Int?
+  NbrSkids               Int?
+  CreateDt               DateTime?  @db.DateTime
+  CreateUser             String?    @db.VarChar(25)
+  UpdateDt               DateTime?  @db.DateTime
+  UpdateUser             String?    @db.VarChar(25)
+  Plans                  Plans?     @relation(fields: [PlanId], references: [PlanId])
+  Shipments              Shipments? @relation(fields: [ShipmentId], references: [ShipmentId])
+
+  @@index([ShipmentId], name: "IX_ShipmentDetails_SID")
+}
+
+model Shipments {
+  ShipmentId                                           Int               @id @default(autoincrement())
+  EntityOwnerId                                        Int?
+  ShipmentName                                         String?           @db.VarChar(100)
+  BookingNbr                                           String?           @db.VarChar(50)
+  ShipmentStatus                                       String?           @db.VarChar(50)
+  DueDt                                                DateTime?         @db.DateTime
+  RequestedPickupDt                                    DateTime?         @db.DateTime
+  ShipDt                                               DateTime?         @db.DateTime
+  ETA                                                  DateTime?         @db.DateTime
+  DeliveryDt                                           DateTime?         @db.DateTime
+  RequestorId                                          Int?
+  SupplierLocationId                                   Int?
+  ExporterLocationId                                   Int?
+  OriginLocationId                                     Int?
+  SoldToLocationId                                     Int?
+  NotifyLocationId                                     Int?
+  ConsigneeLocationId                                  Int?
+  DestinationLocationId                                Int?
+  CarrierName                                          String?           @db.VarChar(50)
+  CarrierProNbr                                        String?           @db.VarChar(25)
+  ASN                                                  String?           @db.VarChar(50)
+  Modality                                             String?           @db.VarChar(50)
+  ServiceLevel                                         String?           @db.VarChar(25)
+  ProjectNbr                                           String?           @db.VarChar(25)
+  Project                                              String?           @db.VarChar(100)
+  ShipmentNote                                         String?           @db.VarChar(1000)
+  CreateDt                                             DateTime?         @db.DateTime
+  CreateUser                                           String?           @db.VarChar(25)
+  UpdateDt                                             DateTime?         @db.DateTime
+  UpdateUser                                           String?           @db.VarChar(25)
+  Locations_LocationsToShipments_DestinationLocationId Locations?        @relation("LocationsToShipments_DestinationLocationId", fields: [DestinationLocationId], references: [LocationId])
+  Locations_LocationsToShipments_ExporterLocationId    Locations?        @relation("LocationsToShipments_ExporterLocationId", fields: [ExporterLocationId], references: [LocationId])
+  Locations_LocationsToShipments_NotifyLocationId      Locations?        @relation("LocationsToShipments_NotifyLocationId", fields: [NotifyLocationId], references: [LocationId])
+  Locations_LocationsToShipments_OriginLocationId      Locations?        @relation("LocationsToShipments_OriginLocationId", fields: [OriginLocationId], references: [LocationId])
+  Locations_LocationsToShipments_SoldToLocationId      Locations?        @relation("LocationsToShipments_SoldToLocationId", fields: [SoldToLocationId], references: [LocationId])
+  ShipmentDetails                                      ShipmentDetails[]
+
+  @@index([EntityOwnerId], name: "IX_Shipments_EOID")
+}
+
+model Vendors {
+  VendorId       Int        @id @default(autoincrement())
+  EntityOwnerId  Int?
+  VendorCode     String?    @db.VarChar(25)
+  VendorName     String?    @db.VarChar(50)
+  VendorLongName String?    @db.VarChar(100)
+  ActiveFlg      Boolean    @default(true)
+  CreateDt       DateTime?  @db.DateTime
+  CreateUser     String?    @db.VarChar(25)
+  UpdateDt       DateTime?  @db.DateTime
+  UpdateUser     String?    @db.VarChar(25)
+  Products       Products[]
+}

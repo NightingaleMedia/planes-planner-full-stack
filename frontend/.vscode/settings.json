@@ -1,0 +1,17 @@
+{
+    "prettier.enable": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.format.enable": true,
+    "eslint.debug": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+        "jsx",
+        "react",
+        "tsx",
+        "json"
+    ]
+}

@@ -1,0 +1,57 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "ignorePatterns": ["contact.json", "package.json"],
+    "plugins": ["react", "@typescript-eslint"],
+    "rules": {
+        "quotes": ["error", "single"],
+        "class-methods-use-this": "off",
+        "comma-dangle": "off",
+        "import/no-cycle": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/order": "off",
+        "import/prefer-default-export": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "max-len": "off",
+        "no-console": "off",
+        "no-param-reassign": "off",
+        "no-plusplus": "off",
+        "no-return-assign": "off",
+        "object-curly-newline": "off",
+        "react/forbid-prop-types": "off",
+        "react/jsx-filename-extension": "off",
+        "react/jsx-closing-bracket-location": [1, "line-aligned"],
+        "react/jsx-first-prop-new-line": [2, "multiline"],
+        "react/jsx-max-props-per-line": [
+            2,
+            {
+                "when": "multiline"
+            }
+        ],
+        "react/display-name": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/react-in-jsx-scope": "off",
+        "react/require-default-props": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/no-var-requires": "off"
+    }
+}
