@@ -59,8 +59,8 @@ const PoDetailHeader = ({
                 <Grid item sm={3} xs={12}>
                     <HeaderBox className="status">
                         <Status
-                            planLoadId={selectedPlanLoad.PlanLoadId}
-                            purchaseOrderId={poData.PurchaseOrderId}
+                            planLoadId={selectedPlanLoad?.PlanLoadId}
+                            purchaseOrderId={poData?.PurchaseOrderId}
                         />
                     </HeaderBox>
                     <HeaderBox className="status">
@@ -132,10 +132,10 @@ const PoDetailHeader = ({
                     <HeaderBox>
                         <Typography variant="h5">Plan Load</Typography>
                         <Typography>
-                            Name: {selectedPlanLoad.LoadName}
+                            Name: {selectedPlanLoad?.LoadName}
                         </Typography>
                         <Typography>
-                            Id: {selectedPlanLoad.PlanLoadId}
+                            Id: {selectedPlanLoad?.PlanLoadId}
                         </Typography>
                     </HeaderBox>
                 </Grid>

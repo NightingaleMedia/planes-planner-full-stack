@@ -54,7 +54,7 @@ const PoDetail = ({ purchaseOrderId }: PoDetail__Props): any => {
     })
 
     const selectedIndex = useMemo(() => {
-        if (!router.query.index) {
+        if (!router?.query?.index) {
             return 1
         }
         if (router.query.index.length > 1) {

@@ -35,3 +35,5 @@ src/generated/
 build/
 planes-auth.log
 build/**/*
+
+super-admin.json

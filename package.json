@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "develop:backend": "npm --cwd backend dev",
-    "develop:frontend": "npm --cwd frontend dev",
+    "develop:backend": "npm --prefix backend run dev",
+    "develop:frontend": "npm --prefix frontend run dev",
     "build:backend": "npm --cwd backend build",
     "build:frontend": "npm --cwd frontend build",
     "serve:backend": "cd backend && npm start",

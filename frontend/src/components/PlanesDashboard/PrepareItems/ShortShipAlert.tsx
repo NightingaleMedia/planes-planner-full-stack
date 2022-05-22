@@ -13,9 +13,7 @@ const StyledButton = styled(Button)`
 const ShortShipAlert = ({ Loads }: { Loads: Loads[] }) => {
     const router = useRouter()
 
-    console.log(router.query.index)
-    console.log(Loads)
-    if (Loads.length === 1) {
+    if (Loads.length <= 1) {
         return <></>
     }
 
