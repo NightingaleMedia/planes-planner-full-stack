@@ -77,4 +77,33 @@ const purchaseOrderNotify = async (emailList: string[], po: PurchaseOrders) => {
   return result
 }
 
+export const sendToWebMaster = async (payload: {
+  message: any
+  url: string
+}) => {
+  log.log({
+    label: 'email',
+    level: 'error',
+    data: `500 error occurred, ${payload}`,
+  })
+
+  const mail = new Mail()
+
+  const result = await mail.send({
+    to: 'alsigman@gmail.com, nmoeller@planescompanies.com',
+    from: process.env.DEFAULT_EMAIL_FROM,
+    subject: 'Error Occured in Planes Planner',
+    html: `
+    <pThis is an automated notification that an error ocurred at <strong>${Date.now()} </strong> </p>
+    <br/>
+    <p> Error below: </p>
+    <p> ${JSON.stringify(payload.message)} </p>
+    <br/>
+    <p> url: ${payload.url} </p>
+    `,
+  })
+
+  log.log({ data: result })
+}
+
 module.exports = { purchaseOrderNotify, sendNewPassword, mail: new Mail() }

@@ -2,19 +2,39 @@ import { Helmet } from 'react-helmet-async'
 import { Box, Button, Container, Typography } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useTheme } from '@material-ui/core/styles'
+import { useEffect } from 'react'
+import { FetchAdmin } from '../lib/auth/FetchAdmin'
+import { useRouter } from 'next/router'
 
-const ServerError = () => {
+const sendErrorEmail = async (payload: { message: any; url: string }) => {
+    await FetchAdmin({
+        path: '/email-webmaster/error',
+        options: {
+            method: 'POST',
+            body: JSON.stringify(payload),
+        },
+    })
+}
+
+const ServerError = ({ err, statusCode }: any) => {
+    const router = useRouter()
     const theme = useTheme()
     const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'))
 
-    // useEffect(() => {
-    //   gtm.push({ event: 'page_view' });
-    // }, []);
+    useEffect(() => {
+        sendErrorEmail({
+            message: {
+                error: err ?? 'Not known',
+                code: statusCode ?? 'unknown',
+            },
+            url: router.pathname,
+        }).then(res => console.log(res))
+    }, [])
 
     return (
         <>
             <Helmet>
-                <title>Error: Server Error | Material Kit Pro</title>
+                <title>Error: Server Error</title>
             </Helmet>
             <Box
                 sx={{
@@ -53,7 +73,7 @@ const ServerError = () => {
                         <Box
                             alt="Under development"
                             component="img"
-                            src={`/static/error/error500_${theme.palette.mode}.svg`}
+                            src={`./error/error500_${theme.palette.mode}.svg`}
                             sx={{
                                 height: 'auto',
                                 maxWidth: '100%',
@@ -67,20 +87,16 @@ const ServerError = () => {
                             justifyContent: 'center',
                             mt: 6,
                         }}
-                    >
-                        <Button
-                            color="primary"
-                            component="a"
-                            to="/"
-                            variant="outlined"
-                        >
-                            Back to Home
-                        </Button>
-                    </Box>
+                    ></Box>
                 </Container>
             </Box>
         </>
     )
+}
+
+ServerError.getInitialProps = ({ res, err }) => {
+    const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+    return { err, statusCode }
 }
 
 export default ServerError

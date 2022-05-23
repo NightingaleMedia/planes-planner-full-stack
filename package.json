@@ -6,8 +6,8 @@
   "scripts": {
     "develop:backend": "npm --prefix backend run dev",
     "develop:frontend": "npm --prefix frontend run dev",
-    "build:backend": "npm --cwd backend build",
-    "build:frontend": "npm --cwd frontend build",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
     "serve:backend": "cd backend && npm start",
     "serve:frontend": "cd frontend && npm start",
     "init:backend": "cd backend && npm install && npx prisma generate",

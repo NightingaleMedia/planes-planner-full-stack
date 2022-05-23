@@ -3,6 +3,7 @@ const authRoutes = require('../api/auth/auth.routes')
 const userRoutes = require('../api/user/user.routes')
 const meRoutes = require('../api/me/me.routes')
 const adminRoutes = require('../api/admin/admin.routes')
+const errorRoutes = require('../api/error/error.routes')
 const vendorRoutes = require('../api/vendor/vendor.routes')
 const router = express.Router()
 const { jwt, onlyAdmin, onlySuperAdmin } = require('../middleware/auth')
@@ -12,6 +13,11 @@ const allRoutes = [
     path: '/auth',
     middleware: [],
     route: authRoutes,
+  },
+  {
+    path: '/email-webmaster/error',
+    middleware: [],
+    route: errorRoutes,
   },
   {
     path: '/user',
