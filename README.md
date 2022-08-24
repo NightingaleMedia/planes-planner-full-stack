@@ -1,10 +1,19 @@
 ### Install Order:
 
 0. Setup .env files
-   - There are .env.example files for each sub directory
+   - There are .env.example files for each sub directory (Frontend and Backend)
+   - You there are dummy values in those .env files, you need to replace them with working ones.
 1. Init
-   - Install the modules
-   - Generates the JS database connectors
+   - First do an install of the wrapper module which orchestrates everything else
+
+```bash
+    npm install
+```
+
+- From now on you can stay in this root directory to run all commands. The following command:
+  - Install the modules:
+  - Generates the JS database connectors
+  -
 
 ```bash
     npm run init
